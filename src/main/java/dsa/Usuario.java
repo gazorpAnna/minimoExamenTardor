@@ -25,4 +25,10 @@ public class Usuario {
     public List<Producto> getPedidosServidos() {
         return pedidosServidos;
     }
+
+    public void transferPedido (Producto p)
+    {
+        //pedidosRealizados.remove(p);
+        pedidosServidos.add(p);
+    }
 }

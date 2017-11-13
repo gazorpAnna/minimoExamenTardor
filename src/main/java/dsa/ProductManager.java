@@ -14,7 +14,7 @@ public interface ProductManager {
 
     List<Producto> listadoProductosUsuario(Usuario u);
 
-    List<Producto> listadoProductosCantidad();
+    List<ProductoCant> listadoProductosCantidad();
 
 
 
