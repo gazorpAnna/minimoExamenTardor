@@ -27,6 +27,10 @@ public class ProductManagerImpl implements ProductManager{
         log.info("listas de productos y usuarios inicializadas");
     }
 
+    public Usuario buscarUsuario(String nombre)
+    {
+        return listaUsuarios.get(nombre);
+    }
     public static ProductManagerImpl getInstance()
     {
         if(instance == null)

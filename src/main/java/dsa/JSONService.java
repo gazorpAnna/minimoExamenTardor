@@ -28,6 +28,6 @@ public class JSONService {
         Producto p = impl.getListaProductos().getProductoDeLista(nombreProducto);
         pedido.put(p,cant);
 
-        //impl.realizarPedido(pedido,usuario);
+        impl.realizarPedido(pedido,impl.buscarUsuario(usuario));
     }
 }
