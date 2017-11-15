@@ -8,11 +8,11 @@ public interface ProductManager {
 
     List<Producto> listaOrdenadaProductos();
 
-    boolean realizarPedido(HashMap<Producto,Integer> p, Usuario u);
+    boolean realizarPedido(PedidoProducto p);
 
     boolean servirPedido();
 
-    List<Producto> listadoProductosUsuario(Usuario u);
+    List<PedidoProducto> listadoPedidosUsuario(Usuario u);
 
     List<ProductoCant> listadoProductosCantidad();
 

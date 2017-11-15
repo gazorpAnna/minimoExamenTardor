@@ -3,7 +3,7 @@ package dsa;
 import java.util.*;
 
 public class ListaProductos {
-    //HashMap<Producto,Integer> listaProductos = new HashMap<>();
+    //HashMap<Producto,Integer> menuProductos = new HashMap<>();
 
     List<ProductoCant> listaProductos = new ArrayList<>();
     Queue<PedidoProducto> pedidosRealizados = new LinkedList<>();
