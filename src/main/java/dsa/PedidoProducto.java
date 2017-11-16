@@ -22,8 +22,15 @@ public class PedidoProducto {
         return usu;
     }
 
+    @Override
+    public String toString() {
+        return "PedidoProducto{" +
+                "listaProductos=" + listaProductos +
+                ", usu=" + usu +
+                '}';
+    }
 
-    /*
+/*
     public PedidoProducto(Producto producto, Usuario usu) {
         this.producto = producto;
         this.usu = usu;

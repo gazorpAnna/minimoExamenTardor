@@ -7,8 +7,8 @@ public class Usuario {
 
     String nombre;
 
-    List<Producto> pedidosRealizados = new ArrayList<>();
-    List<Producto> pedidosServidos = new ArrayList<>();
+    //List<Producto> pedidosRealizados = new ArrayList<>();
+    //List<Producto> pedidosServidos = new ArrayList<>();
 
     public Usuario(String nombre) {
         this.nombre = nombre;
@@ -18,6 +18,14 @@ public class Usuario {
         return nombre;
     }
 
+    @Override
+    public String toString() {
+        return "Usuario{" +
+                "nombre='" + nombre + '\'' +
+                '}';
+    }
+
+    /*
     public List<Producto> getPedidosRealizados() {
         return pedidosRealizados;
     }
@@ -30,5 +38,5 @@ public class Usuario {
     {
         //pedidosRealizados.remove(p);
         pedidosServidos.add(p);
-    }
+    }*/
 }

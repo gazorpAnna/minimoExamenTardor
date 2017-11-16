@@ -22,4 +22,12 @@ public class Producto {
     public int getPrecio() {
         return precio;
     }
+
+    @Override
+    public String toString() {
+        return "Producto{" +
+                "nombreProd='" + nombreProd + '\'' +
+                ", precio=" + precio +
+                '}';
+    }
 }

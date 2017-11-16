@@ -20,4 +20,12 @@ public class ProductoCant {
     public void setCant(Integer cant) {
         this.cant = cant;
     }
+
+    @Override
+    public String toString() {
+        return "ProductoCant{" +
+                "prod=" + prod +
+                ", cant=" + cant +
+                '}';
+    }
 }

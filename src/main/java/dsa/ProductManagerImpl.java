@@ -16,10 +16,19 @@ public class ProductManagerImpl implements ProductManager{
     List<PedidoProducto>        pedidiosServidos;
     Queue<PedidoProducto>       colaPedidos;
 
+    public List<PedidoProducto> getPedidiosRealizados() {
+        return pedidiosRealizados;
+    }
 
+    public List<PedidoProducto> getPedidiosServidos() {
+        return pedidiosServidos;
+    }
+
+    public Queue<PedidoProducto> getColaPedidos() {
+        return colaPedidos;
+    }
 
     public ProductManagerImpl() {
-        //menuProductos = new ListaProductos();
         menuProductos = new ArrayList<>();
         Producto p = new Producto("bocata",3);
         Producto pp = new Producto("ensalada",5);
@@ -49,16 +58,14 @@ public class ProductManagerImpl implements ProductManager{
     public HashMap<String, Usuario> getListaUsuarios() {
         return listaUsuarios;
     }
-    /*public ListaProductos getMenuProductos() {
-        return menuProductos;
-    }*/
-
     public List<Producto> getMenuProductos() {
         return menuProductos;
     }
 
     public Usuario buscarUsuario(String nombre)
     {
+        if (!listaUsuarios.containsKey(nombre))
+            log.error("El usuario "+nombre+" no ha sido encontrado.");
         return listaUsuarios.get(nombre);
     }
 
@@ -69,6 +76,7 @@ public class ProductManagerImpl implements ProductManager{
         if (!menuProductos.isEmpty()) {
             List<Producto> ant = new ArrayList<>();
             List<Producto> result = new ArrayList<>();
+            List<Producto> resultReverse = new ArrayList<>();
             for (Producto p : menuProductos) {
                 ant.add(p);
             }
@@ -86,52 +94,35 @@ public class ProductManagerImpl implements ProductManager{
                 result.add(prod);
                 ant.remove(prod);
             }
+            Collections.reverse(result);
             return result;
-        } else
+        } else {
+            log.error("No hay productos en el menu.");
             return null;
+        }
     }
 
     @Override
     public boolean realizarPedido(PedidoProducto pedido) {//HashMap<Producto, Integer> p, Usuario u) {
         // Afegir un pedido a la pedidosRealizados
         // Afegir pedido a la colaPedido
-
+        log.info("Se añade el pedido del usuario "+pedido.getUsu().getNombre()+ " a pedidosRealizados y a la cola de pedidos.");
         pedidiosRealizados.add(pedido);
         colaPedidos.add(pedido);
-
-
-        /*log.info("Añado un pedido al usuario "+ u.getNombre());
-        for (Map.Entry<Producto, Integer> a : p.entrySet()){
-            for (int cont = 0; cont < a.getValue(); cont++)
-            {
-
-                u.getPedidosRealizados().add(a.getKey());
-                PedidoProducto pedprod = new PedidoProducto(a.getKey(),u);
-                log.info("Añado el producot "+ pedprod.getProducto().getNombreProd() + "A la lista de pedidosRealizados");
-                menuProductos.getPedidosRealizados().add(pedprod);
-                ProductoCant prod = menuProductos.getProdCant(a.getKey().getNombreProd());
-                prod.setCant(prod.getCant()+1);
-                log.info("Incremento la cantidad en la lista de Productos general");
-            }
-
-        }
-        listaUsuarios.replace(u.getNombre(),u);
-        log.info("Reemplazo el usuario modificado en la lista de usuarios");*/
         return true;
     }
 
     @Override
     public boolean servirPedido() {
-        pedidiosServidos.add(colaPedidos.poll());
-
-/*
-        PedidoProducto ped = menuProductos.getPedidosRealizados().poll();
-        log.info("Saco el pedido de la cola "+ped.getProducto().getNombreProd()+ "que va destinado al usuario " + ped.getUsu().getNombre());
-        Usuario usu = listaUsuarios.get(ped.getUsu().getNombre());
-        usu.transferPedido(ped.getProducto());
-        log.info("Añado el pedido en la lista de pedidos servidos del Usuario sin quitarlo de la lista de pedidos realizados");
-*/
-        return true;
+        if (colaPedidos.poll() == null) {
+            log.info("No hay pedidos para servir.");
+            return false;
+        } else
+        {
+            log.info("Se sirve el pedido "); //+ colaPedidos.poll().getUsu().getNombre() + " y se añade el pedido a pedidos servidos.");
+            pedidiosServidos.add(colaPedidos.poll());
+            return true;
+        }
     }
 
     @Override
@@ -142,6 +133,8 @@ public class ProductManagerImpl implements ProductManager{
             if (p.getUsu().equals(u))
                 result.add(p);
         }
+        if (result.isEmpty())
+            log.info("El usuario "+u.getNombre() + " no ha realizado ningun pedido.");
         return result;
         //return u.getPedidosRealizados();
     }
@@ -154,13 +147,14 @@ public class ProductManagerImpl implements ProductManager{
                 return true;
             }
         }
+
         return false;
     }
 
     @Override
     public List<ProductoCant> listadoProductosCantidad() {
         // Supongo que son los pedidos servidos
-        log.info("intento de ordenar los productos por numero de ventas");
+        log.info("lista para ordenar los productos por número de ventas");
         List<ProductoCant> result = new ArrayList<>();
         for (PedidoProducto pedido: pedidiosServidos) {
             for (Producto p:pedido.getListaProductos()) {
@@ -173,9 +167,6 @@ public class ProductManagerImpl implements ProductManager{
                             break;
                         }
                     }
-
-                    //int i = result.indexOf(p);
-                    //result.get(i).setCant(result.get(i).getCant()+1);
                 } else
                 {
                     // si no esta, añado un registro de ese producto
@@ -207,11 +198,13 @@ public class ProductManagerImpl implements ProductManager{
                 antFin.remove(prod);
             }
             return resultFin;
-        } else
+        } else {
+            log.info("No se ha vendido ningún producto aún.");
             return null;
+        }
 
-        ///// NO VA, JA QUE EM TREU ELS OBJECTES DE LA LLISTA PRINCIPAL??????????????
 
+        /// No va el comparador, per això he fet el que està a dalt...
         //Comparator<Integer> comparador = Collections.reverseOrder();
         //Collections.sort(menuProductos, comparador);
         /*Collections.sort(menuProductos, new Comparator () {
@@ -220,26 +213,5 @@ public class ProductManagerImpl implements ProductManager{
                 return new Integer(o2.getCant()).compareTo(new Integer(o1.getCant()));
             }
         });*/
-        /*List<ProductoCant> result = new ArrayList<>();
-        List<ProductoCant> ant = menuProductos.getListaProductos();
-        List<ProductoCant> act = ant;
-
-        ProductoCant prod = menuProductos.getListaProductos().get(0);
-        int max = prod.getCant();
-
-        for (ProductoCant i: act) {
-            for (ProductoCant ii:ant) {
-                if(max < ii.getCant())
-                {
-                    max = ii.getCant();
-                    prod = ii;
-                }
-            }
-            result.add(prod);
-            ant.remove(prod);
-            prod = null;
-            max=-1;
-        }
-        return result;*/
     }
 }
