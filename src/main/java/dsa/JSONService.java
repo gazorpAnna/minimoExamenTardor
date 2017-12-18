@@ -41,6 +41,38 @@ public class JSONService {
         //pedido.put(p,2);
     }
 
+/***************************************************************/
+
+    @GET
+    @Path("usuario/{nomPlayer}/{password}")
+    @Produces(MediaType.TEXT_PLAIN)
+    public Boolean loginUser(@PathParam("nomPlayer") String nombreUser, @PathParam("password") String password) {
+
+        try {
+
+            return true;
+        } catch (Exception e) {
+            throw e;
+        }
+
+    }
+    @Path("listaProductos")
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    public ListaProductos2 getListaProductos()
+    {
+        String res = "La lista ordenada por precio ascente: \n";
+
+        List<Producto> lista = impl.listaOrdenadaProductos();
+
+        ListaProductos2 lis = new ListaProductos2(lista);
+        /*for (Producto product: lista) {
+            res+=product.toString() + "\n";
+        }*/
+        return lis;
+    }
+
+/*********************************************/
     @Path("/listaOrdenadaPrecio")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
